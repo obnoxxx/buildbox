@@ -49,7 +49,7 @@ These are the supported options:
 [-t | --test ]                               - print some info for  testing this program
 [ -b | --build ]                             - perform a build in the CWD
 
-One of the actions (help, test, and build) must be selected.
+Exactly one of the actions (help, test, and build) must be selected.
 
 
 
