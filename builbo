@@ -27,6 +27,8 @@ fi
  ACTION="$DEFAULT_ACTION"
  # action that was explicxitly set from the command line:
  EXPLICIT_ACTION=""
+ # shell for interactive use:
+ I_SHELL="bash"
 
 
 detect_container_command
@@ -50,20 +52,23 @@ These are the supported options:
 [ -o | --os (fedora|debian|ubuntu|suse) ]         - linux distro (default: $OS)
 [ -n | --registry-namespace (...) ]          - default: $NAMESPACE 
 [ -s  | --build-script (path) ]              - command or local script (in the CWD)  for building the project.
-[ -d | --deps (pkg,pkg,pkg,...) ]            - additional packages to install (comma-separated
+[ -d | --deps (pkg,pkg,pkg,...) ]            - additional packages to install (comma-separated)
+  -i | --shell (bash) ]                      - sinteractive shell (default: $I_SHELL)
 [ -h | --help ]                              - action help: print this usage information
 [-t | --test ]                               - action test: print some diagnostic info for  testing this program
 [ -b | --build ]                             - action build: perform a build in the CWD
+[ -e | --enter]                              - action enter: enter container in interactive mode (shell)
 
 
 The Options -l, -r, -o, and -n in combination determine the  buildbox image (by tag) to be used.
 
 
-The options -h, -t, and -b are the available actions (help, test, and build) to be performed.
+The options -h, -t, -e, and -b are the available actions (help, test, enter, and build) to be performed.
 
 Exactly one of the actions  must be selected.
 
-The build action requires the additional option -s
+The build action requires the additional option -s.
+The enter action  makes use of the --shell option.
 
 EOF
 
@@ -73,34 +78,15 @@ function set_action() {
 
 local action="$1"
 
-echo "INFO:  action '$action' provided."
+
 
 if [ -n "$EXPLICIT_ACTION" ]; then
-        echo "Error: multiple actions specified but only one is allowed."
+        echo "Error: multiple actions specified on cmdline but only one is allowed."
         usage
         exit 1
-fi
-
-
-if [ -n "$ACTION" ]; then
-
-    if [ "$ACTION" = "$DEFAULT_ACTION" ]; then
-        true
-        # keeping ACTION unchanged at  default action.
-    else
-
-        # overriding default action.
-        ACTION="$action"
-        EXPLICIT_ACTION="$action"
-        # action was set explicitly
-        true
     fi
-
-fi
-
-
-
-
+    ACTION="$action"
+    EXPLICIT_ACTION="$action"
 
 }
 
@@ -108,8 +94,8 @@ fi
 
 
 # parsing command line arguments:
-optstring="l:r:c:o:n:hbts:d:"
-optstring_long="lang:,registry:,container-cmd:,help,test,build,build-script:,deps:"
+optstring="l:r:c:o:n:hbtes:d:"
+optstring_long="lang:,registry:,container-cmd:,help,test,build,enter,build-script:,deps:"
 
 
 parsed_args=$(getopt  -n "builbo" -o "$optstring" -l "$optstring_long" -- "$@")
@@ -137,6 +123,7 @@ do
  -h | --help) set_action "help" ; shift ;;
  -b| --build) set_action "build" ; shift ;;
  -t| --test) set_action "test" ; shift ;;
+ -e|--enter) set_action "enter" ; shift ;;
 
 
  # -- means end of args. ignore and stop processing.
@@ -150,6 +137,11 @@ do
 done
 
 # done processing args
+
+
+
+
+
 
 
 
@@ -186,7 +178,7 @@ esac
 
 # setting CONTAINER_RUN_CMD assumes CONTAINER_RUN_CMD is set.
 if [ -z "$CONTAINER_CMD" ]; then
-    echo "error: container command not set. zthis should noy happen."
+    echo "error: container command not set. this should not happen."
     exit 1
 fi
 if [ "$CONTAINER_CMD" = "podman" ]; then
@@ -204,6 +196,7 @@ exit 1
 fi
 
 if [ "$ACTION" = "build" ]; then
+
 
     if [ -z "$BUILD_CMD" ]; then
 
@@ -231,17 +224,21 @@ function print_settings() {
   echo "PKG_CMD: $PKG_CMD"
   echo "CONTAINER_CMD: $CONTAINER_CMD"
   echo "CONTAINER_RUN_CMD: '$CONTAINER_RUN_CMD'"
-  
+  echo "interactive shell: '$I_SHELL'"
   echo "IMAGE: $IMAGE"
     
 }
 
 if [ "$ACTION" = "test" ]; then
+    echo "performing test action."
     print_settings
     exit 0
 fi
 
 if [ "$ACTION" = "help" ]; then
+
+    echo "performing help action."
+
     usage
     exit 0
 fi
@@ -273,11 +270,24 @@ function run_build() {
 $CONTAINER_RUN_CMD "$BUILD_CMD"
 }
 
+function enter_container() {
+
+$CONTAINER_RUN_CMD "$I_SHELL"
+
+}
+
 
 if [ "$ACTION" = "build" ]; then
+echo "performing build action."
 install_deps
 run_build
+
+elif [ "$ACTION" = "enter" ]; then
+   echo "performing enter action." 
+    enter_container
 fi
+
+
 
 
 

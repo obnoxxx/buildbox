@@ -5,6 +5,9 @@ along with accompanying cli tooling to facilitate convenient execution of builds
 Note that the focus is not on working interactively but  instead on compiling/building with an intention
 to provide tooling for creating deterministic and reproducible builds
 
+It is however of course possible to use the images interactively.
+
+
 
 
 **planned characteristics:**
@@ -92,5 +95,17 @@ $
 ```
 
 As a result of this process, build artifacts will be placed under  the CWD (project checkout dir).
+
+
+example for using the container interactively:
+
+```console
+$ git clone project
+$ cd project_dir
+$ edit build.sh
+$ builbo -c -l c -o debian -s ./build.sh --enter
+# ^D
+$
+```
 
 
