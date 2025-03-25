@@ -23,7 +23,10 @@ fi
  NAMESPACE=buildbox
  BUILD_CMD=""
  DEPS=""
- ACTION=""
+ DEFAULT_ACTION="help"
+ ACTION="$DEFAULT_ACTION"
+ # action that was explicxitly set from the command line:
+ EXPLICIT_ACTION=""
 
 
 detect_container_command
@@ -66,6 +69,44 @@ EOF
 
 }
 
+function set_action() {
+
+local action="$1"
+
+echo "INFO:  action '$action' provided."
+
+if [ -n "$EXPLICIT_ACTION" ]; then
+        echo "Error: multiple actions specified but only one is allowed."
+        usage
+        exit 1
+fi
+
+
+if [ -n "$ACTION" ]; then
+
+    if [ "$ACTION" = "$DEFAULT_ACTION" ]; then
+        true
+        # keeping ACTION unchanged at  default action.
+    else
+
+        # overriding default action.
+        ACTION="$action"
+        EXPLICIT_ACTION="$action"
+        # action was set explicitly
+        true
+    fi
+
+fi
+
+
+
+
+
+}
+
+
+
+
 # parsing command line arguments:
 optstring="l:r:c:o:n:hbts:d:"
 optstring_long="lang:,registry:,container-cmd:,help,test,build,build-script:,deps:"
@@ -93,9 +134,9 @@ do
  -n | --registry-namespace) NAMESPACE="$2" ; shift 2 ;;
  -s | --build-script) BUILD_CMD="$2" ; shift 2 ;;
  -d | --deps) DEPS="$2"; shift 2 ;;
- -h | --help) ACTION="help" ; shift ;;
- -b| --build) ACTION="build" ; shift ;;
- -t| --test) ACTION="test" ; shift ;;
+ -h | --help) set_action "help" ; shift ;;
+ -b| --build) set_action "build" ; shift ;;
+ -t| --test) set_action "test" ; shift ;;
 
 
  # -- means end of args. ignore and stop processing.
@@ -157,7 +198,7 @@ if [ "$CONTAINER_CMD" = "podman" ]; then
 fi
 
 if [ -z "$ACTION" ]; then
-echo "error: no action selected. Please use one of -t, -h, and -b."
+echo "error: no action selected. Please use exactly one of -t, -h, and -b."
 usage
 exit 1
 fi
