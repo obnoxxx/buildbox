@@ -7,6 +7,7 @@ IMAGE_TAG ?= latest
 IMAGE_OS ?= fedora
 IMAGE_LANG ?= c
 IMAGE_NAME ?= buildbox/$(IMAGE_OS)-$(IMAGE_LANG)
+INSTALL_DIR ?= /usr/local/bin
 
 IMG  ?= $(IMAGE_REGISTRY)/$(REGISTRY_NAMESPACE)/$(IMAGE_NAME):$(IMAGE_TAG)
 
@@ -37,3 +38,6 @@ image-push:
 
 
 
+.PHONY: install-cli
+install-cli:
+	@install ./builbo $(INSTALL_DIR)
