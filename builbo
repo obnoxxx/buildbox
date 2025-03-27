@@ -267,7 +267,7 @@ function install_deps() {
 }
 
 function run_build() {
-$CONTAINER_RUN_CMD "$BUILD_CMD"
+$CONTAINER_RUN_CMD bash -c "$BUILD_CMD"
 }
 
 function enter_container() {
