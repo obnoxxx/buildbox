@@ -103,7 +103,7 @@ example for using the container interactively:
 $ git clone project
 $ cd project_dir
 $ edit build.sh
-$ builbo -c -l c -o debian -s ./build.sh --enter
+$ builbo -c -l c -o debian --enter
 # ^D
 $
 ```
