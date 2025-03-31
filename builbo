@@ -266,8 +266,18 @@ function install_deps() {
 
 }
 
-function run_build() {
-$CONTAINER_RUN_CMD bash -c "$BUILD_CMD"
+function install_deps_and_run_build() {
+
+
+
+    local CMD="$BUILD_CMD"
+
+    if [ -n "$DEPS" ]; then
+        CMD="$PKG_CMD $DEPS_PKGS && $BUILD_CMD"
+
+    fi
+
+$CONTAINER_RUN_CMD bash -c "$CMD"
 }
 
 function enter_container() {
@@ -279,8 +289,7 @@ $CONTAINER_RUN_CMD "$I_SHELL"
 
 if [ "$ACTION" = "build" ]; then
 echo "performing build action."
-install_deps
-run_build
+install_deps_and_run_build
 
 elif [ "$ACTION" = "enter" ]; then
    echo "performing enter action." 
