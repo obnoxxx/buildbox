@@ -51,7 +51,7 @@ These are the supported options:
 [ -c | --container-cmd (podman|docker) ]     - default: $CONTAINER_CMD (auto-detected)
 [ -o | --os (fedora|debian|ubuntu|suse) ]         - linux distro (default: $OS)
 [ -n | --registry-namespace (...) ]          - default: $NAMESPACE 
-[ -s  | --build-script (path) ]              - command or local script (in the CWD)  for building the project.
+[ -s  | --build-script (command|path) ]              - command or local script (in the CWD)  for building the project.
 [ -d | --deps (pkg,pkg,pkg,...) ]            - additional packages to install (comma-separated)
   -i | --shell (bash) ]                      - sinteractive shell (default: $I_SHELL)
 [ -h | --help ]                              - action help: print this usage information
