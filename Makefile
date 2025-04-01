@@ -44,8 +44,8 @@ image-build: ## build a container image.
 	$(CONTAINER_CMD) build -t $(IMG) --build-arg BUILD_LANG=$(IMAGE_LANG) --build-arg INSTALL_SCRIPT=install-packages_$(IMAGE_OS)_$(IMAGE_LANG).sh  -f Containerfile.$(IMAGE_OS) .
 
 
-.PHONY: image-push ## push a container image to the registry.
-image-push:
+.PHONY: image-push 
+image-push: ## push a container image to the registry.
 	$(CONTAINER_CMD) push $(IMG) 
 
 
@@ -57,9 +57,14 @@ install-cli: ## install the builbo cli.
 .PHONY: test
 	test: check ## perform tests.
 
-.PHONY: check
 
-check: checkmake ## perform checks.
+.PHONY: shellcheck
+	shellcheck: ## lint shell scripts
+
+	shellcheck --severity=warning --format=gcc --shell=bash  $(shell find .  -type f -name '*.sh') ./builbo
+
+.PHONY: check
+check: checkmake shellcheck  ## perform checks and linting
 
 .PHONY: makeckmake
 checkmake: ## lint the Makefile with checkmake .
