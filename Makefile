@@ -91,7 +91,7 @@ clean: ## clean the working directory (currently vain).
 help: ## Show help for the Makefile targets.
 	@echo  "Usage: make [TARGET ....]"
 	@echo " Available targets:"
-	@grep --no-filename -E '^[a-zA-Z_%-. ]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	grep --no-filename -E '^[a-zA-Z0-9_%-. ]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo "$$HELPTEXT"
 
 
