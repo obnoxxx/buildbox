@@ -38,7 +38,17 @@ export HELPTEXT
 all: help
 
 .PHONY: vars
-vars: ## print values of variables.
+vars: vars1 vars2 ## print values of some variables.
+
+.PHONY: vars1
+vars1: ## print values of some variables - part 1
+	@echo IMAGE_TAG: $(IMAGE_TAG)
+	@echo IMAGE_OS: $(IMAGE_OS)
+	@echo IMAGE_LANG $(IMAGE_LANG)
+.PHONY: vars2
+vars2: ## print values of some variables - part 2.
+	@echo IMAGE_REGISTRY $(IMAGE_REGISTRY)
+	@echo REGISTRY_NAMESPACE $(REGISTRY_NAMESPACE)
 	@echo CONTAINER_CMD: $(CONTAINER_CMD)
 	@echo IMG: $(IMG)
 
