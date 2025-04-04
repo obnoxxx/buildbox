@@ -7,7 +7,7 @@ LABEL  maintainer="Michael Adam <obnox@samba.org>"
 
 LABEL org.opencontainers.image.title="ubuntu ${BUILD_LANG} Build Container"
 LABEL org.opencontainers.image.description="ubuntu Container for building ${BUILD_LANG} projects"
-LABEL org.opencontainers.image.vendor="obnoxxx"
+LABEL org.opencontainers.image.vendor="buildbox"
 LABEL org.opencontainers.image.url="https://github.com/obnoxxx/buildbox"
 
 COPY  "${INSTALL_SCRIPT}" /usr/local/bin/install-packages.sh
