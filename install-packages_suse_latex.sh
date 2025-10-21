@@ -18,6 +18,6 @@ zypper  install  -y git make cmake  texlive-beamer \
 	texlive-latex-uni8 \
 	texlive-ginpenc \
 	texlive-german \
-	ghostscript vim less
+	ghostscript vim less dia
 
 

@@ -6,6 +6,7 @@
 #dnf5 install 'dnf5-command(groupinstall)'
 #dnf -y groupinstall "Development Tools"
 dnf install  -y git make cmake less \
+	dia \
 	pdflatex \
 	texlive-beamer \
 	texlive-dvips \
