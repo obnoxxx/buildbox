@@ -5,8 +5,13 @@
 #dnf install -y groupinstall
 #dnf5 install 'dnf5-command(groupinstall)'
 #dnf -y groupinstall "Development Tools"
-dnf install  -y git make cmake less \
+dnf install  -y \
+        git \
+	make \
+	cmake \
+	less \
 	dia \
+	texlive \
 	pdflatex \
 	texlive-beamer \
 	texlive-dvips \
@@ -19,11 +24,20 @@ dnf install  -y git make cmake less \
 	texlive-amslatex-primer \
 	texlive-xypic \
 	texlive-bibtex\
-	 texlive-imakeidx \
-	 texlive-makeindex \
-	 texlive-ginpenc \
-	 texlive-latex-uni8 \
-	 texlive-german \
+	texlive-imakeidx \
+	texlive-makeindex \
+	texlive-indextools \
+	texlive-hyperxmp \
+	texlive-fancyhdr \
+	texlive-cm \
+	texlive-bbm \
+        texlive-cm-mf-extra-bold \
+        texlive-metafont\
+        texlive-ec \
+	texlive-cm-super \
+	texlive-ginpenc \
+	texlive-latex-uni8 \
+	texlive-german \
 	ghostscript
 
 
